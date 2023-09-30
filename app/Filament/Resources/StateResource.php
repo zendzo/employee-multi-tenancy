@@ -33,8 +33,10 @@ class StateResource extends Resource
             ->schema([
                 Forms\Components\Select::make('country_id')
                     ->relationship('country', 'name')
+                    ->searchable()
+                    ->preload()
                     ->createOptionForm([
-                      Forms\Components\TextInput::make("name")
+                        Forms\Components\TextInput::make("name")
                     ])
                     ->required(),
                 Forms\Components\TextInput::make('name')
