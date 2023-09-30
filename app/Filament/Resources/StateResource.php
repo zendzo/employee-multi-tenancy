@@ -7,6 +7,8 @@ use App\Filament\Resources\StateResource\RelationManagers;
 use App\Models\State;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -49,11 +51,13 @@ class StateResource extends Resource
     {
         return $table
             ->columns([
+              Tables\Columns\TextColumn::make('name')
+                  ->label('State')
+                  ->sortable()
+                  ->searchable(isIndividual:true, isGlobal: false),
                 Tables\Columns\TextColumn::make('country.name')
-                    ->numeric()
+                    ->searchable(isIndividual: true, isGlobal: false)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -78,6 +82,18 @@ class StateResource extends Resource
                 ]),
             ]);
     }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+      return $infolist
+        ->schema([
+            TextEntry::make('country.name')
+              ->label('Country')
+              ->icon('heroicon-o-flag')
+              ->size(TextEntry\TextEntrySize::Large),
+            TextEntry::make('name')->label('State')
+        ]);
+    }
     
     public static function getRelations(): array
     {
@@ -91,7 +107,7 @@ class StateResource extends Resource
         return [
             'index' => Pages\ListStates::route('/'),
             'create' => Pages\CreateState::route('/create'),
-            'view' => Pages\ViewState::route('/{record}'),
+            // 'view' => Pages\ViewState::route('/{record}'),
             'edit' => Pages\EditState::route('/{record}/edit'),
         ];
     }    
