@@ -25,7 +25,20 @@ class EmployeeResource extends Resource
   {
     return $form
       ->schema([
-
+        Forms\Components\Section::make("Country")
+          ->schema([
+            Forms\Components\Select::make('country_id')
+              ->relationship(name: "country", titleAttribute: 'name')
+              ->searchable()
+              ->preload()
+              ->required(),
+            Forms\Components\TextInput::make('state_id')
+              ->required()
+              ->numeric(),
+            Forms\Components\TextInput::make('city_id')
+              ->required()
+              ->numeric(),
+          ])->columns(3),
         Forms\Components\Section::make("User Name")
           ->description("Employee's Detail Name")
           ->schema([
@@ -53,15 +66,6 @@ class EmployeeResource extends Resource
             Forms\Components\DatePicker::make('date_hired')
               ->required()
           ])->columns(2),
-        Forms\Components\TextInput::make('country_id')
-          ->required()
-          ->numeric(),
-        Forms\Components\TextInput::make('state_id')
-          ->required()
-          ->numeric(),
-        Forms\Components\TextInput::make('city_id')
-          ->required()
-          ->numeric(),
         Forms\Components\TextInput::make('department_id')
           ->required()
           ->numeric(),
