@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\EmployeeResource\Pages;
 
 use App\Filament\Resources\EmployeeResource;
+use App\Models\Employee;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
@@ -27,19 +28,21 @@ class ListEmployees extends ListRecords
         ->modifyQueryUsing(
           fn (Builder $query) => $query->where('date_hired', '>=', now()->subWeek())
         )
-        ->badge(fn (Builder $query) => $query->where('date_hired', '>=', now()->subWeek())->count())
+        ->badge(
+          Employee::where('date_hired', '>=', now()->subWeek())->count()
+        )
         ->badgeColor('info'),
       'This Month' => Tab::make()
         ->modifyQueryUsing(
           fn (Builder $query) => $query->where('date_hired', '>=', now()->subMonth())
         )
-        ->badge(fn (Builder $query) => $query->where('date_hired', '>=', now()->subMonth())->count())
+        ->badge(Employee::where('date_hired', '>=', now()->subMonth())->count())
         ->badgeColor('info'),
       'This Year' => Tab::make()
         ->modifyQueryUsing(
           fn (Builder $query) => $query->where('date_hired', '>=', now()->subYear())
         )
-        ->badge(fn (Builder $query) => $query->where('date_hired', '>=', now()->subYear())->count())
+        ->badge(Employee::where('date_hired', '>=', now()->subYear())->count())
         ->badgeColor('info')
     ];
   }

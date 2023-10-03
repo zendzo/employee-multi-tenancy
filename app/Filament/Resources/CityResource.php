@@ -54,7 +54,7 @@ class CityResource extends Resource
           ->sortable()
           ->searchable(),
         Tables\Columns\TextColumn::make('state.name')
-          ->numeric()
+          ->searchable(isIndividual: true)
           ->sortable(),
         Tables\Columns\TextColumn::make('created_at')
           ->dateTime()
@@ -97,7 +97,7 @@ class CityResource extends Resource
   public static function getRelations(): array
   {
     return [
-      //
+      CountryResource\RelationManagers\EmployeesRelationManager::class,
     ];
   }
 

@@ -18,6 +18,7 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -29,6 +30,42 @@ class EmployeeResource extends Resource
   protected static ?string $navigationIcon = 'heroicon-o-identification';
 
   protected static ?string $navigationGroup = 'Employee Management';
+
+  protected static ?string $recordTitleAttribute = 'first_name';
+
+  public static function getGlobalSearchResultTitle(Model $record): string
+  {
+    return $record->first_name.' '.$record->last_name; 
+  }
+
+  public static function getGlobalSearchResultDetails(Model $record): array
+  {
+    return [
+      'Country' => $record->country->name,
+      'Department' => $record->department->name
+    ];
+  }
+
+  public static function getGloballySearchableAttributes(): array
+  {
+    return ['first_name','last_name','department.name'];
+  }
+
+  public static function getGlobalSearchEloquentQuery(): Builder
+  {
+    // To eager-load these relationships, we must override the getGlobalSearchEloquentQuery() method:
+    return parent::getGlobalSearchEloquentQuery()->with(['country', 'department']);
+  }
+
+  public static function getNavigationBadge(): ?string
+  {
+    return static::getModel()::count();
+  }
+
+  public static function getNavigationBadgeColor(): ?string
+  {
+    return static::getModel()::count() > 10 ? 'warning' : 'primary';
+  }
 
   public static function form(Form $form): Form
   {

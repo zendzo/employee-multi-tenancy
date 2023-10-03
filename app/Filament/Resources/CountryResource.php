@@ -34,7 +34,12 @@ class CountryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make("name")
+                Forms\Components\Section::make('Country Details')
+                  ->schema([
+                    Forms\Components\TextInput::make("name"),
+                    Forms\Components\TextInput::make("code"),
+                    Forms\Components\TextInput::make("phonecode"),
+                  ])
             ]);
     }
 
@@ -77,7 +82,8 @@ class CountryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+          RelationManagers\StatesRelationManager::class,
+          RelationManagers\EmployeesRelationManager::class
         ];
     }
     
