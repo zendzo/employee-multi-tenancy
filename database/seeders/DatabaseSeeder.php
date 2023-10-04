@@ -25,6 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(StatesTableSeeder::class);
         $this->call(CitiesTableSeeder::class);
 
-        Department::create(['name' => 'IT Department']);
+        // Department::create(['name' => 'IT Department', 'team_id' => 1]);
     }
 }

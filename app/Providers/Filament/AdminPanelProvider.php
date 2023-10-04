@@ -2,14 +2,10 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\Tenancy\EditTeamProfile;
-use App\Filament\Pages\Tenancy\RegisterTeam;
-use App\Models\Team;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
-use Filament\Pages\Tenancy\EditTenantProfile;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -30,9 +26,6 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->tenant(Team::class, ownershipRelationship: 'team', slugAttribute: 'slug')
-            ->tenantRegistration(RegisterTeam::class)
-            ->tenantProfile(EditTeamProfile::class)
             ->login()
             ->colors([
               'danger' => Color::Rose,
