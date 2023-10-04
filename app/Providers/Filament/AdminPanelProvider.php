@@ -2,9 +2,11 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\AdministratordMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -23,10 +25,14 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->userMenuItems([
+              MenuItem::make()
+                ->label('Dashboard')
+                ->icon('heroicon-o-presentation-chart-line')
+                ->url('/app')
+            ])
             ->colors([
               'danger' => Color::Rose,
               'gray' => Color::Gray,
@@ -61,9 +67,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-            ])
-            ->authMiddleware([
-                Authenticate::class,
+                AdministratordMiddleware::class
             ]);
     }
 }
